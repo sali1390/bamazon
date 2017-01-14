@@ -87,7 +87,6 @@ function addNewProduct(){
         type: 'input',
         name: 'new_product_name',
         message: 'What item would you like to add?:',
-        choices: getArrayColumn(res, 'product_name', 'item_id')
     }).then(function(answers) {
         var product_name = answers.new_product_name;
         inquirer.prompt({
@@ -107,17 +106,22 @@ function addNewProduct(){
                     name: 'quantity',
                     message: 'How many of this item?:',
                 }).then(function(answers) {
-                    var quantity = answers.quantity;
+                    var stock_quantity = answers.quantity;
+                    
+                    connection.query("INSERT INTO products SET ?", {
+                        product_name: product_name,
+                        department_name: department_name,
+                        price: price,
+                        stock_quantity: stock_quantity
+                    }, function(err, res) {});
+                    
+                    console.log("Item Added!");
+                    
+                    menuOptions();
                 })
             })
         })
     })  
-    connection.query("INSERT INTO products SET ?", {
-        product_name: product_name,
-        department_name: department_name,
-        price: price,
-        stock_quantity: stock_quantity
-    }, function(err, res) {});
 };
 
 function exit(){
@@ -139,8 +143,9 @@ function updateInventory(quantity, id){
       }], function(err, res, fields) {
     if (err) throw err;
         console.log("Item updated!");
+        
+        menuOptions();
     })
-    menuOptions();
 };
 
 menuOptions();
