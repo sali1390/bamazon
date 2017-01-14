@@ -77,6 +77,8 @@ function checkInventory(qReq, item){
             })
         } else {
             console.log("Insufficient quantity!");
+            
+            connection.end();
         }
         
 //        console.log("It works");
