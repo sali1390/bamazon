@@ -71,7 +71,7 @@ function checkInventory(qReq, item){
             },{product_name: item
               }], function(err, res, fields) {
             if (err) throw err;
-                console.log(res);
+//                console.log(res);
                 
             totalCost(item, qReq);
             })
@@ -89,8 +89,10 @@ function totalCost(item, qReq){
     }, function(err, res) {
         var total = res[0].price * qReq;
         
-        console.log("Your total today is: " + total);
+        console.log("Your total today is: $" + total.toFixed(2));
     });
+    
+    connection.end();
 }
 
 displayProducts();
